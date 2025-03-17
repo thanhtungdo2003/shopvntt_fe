@@ -799,6 +799,7 @@ code {
 
 /*============================================[CSS FOR ADMIN_PAGE]===========================================*/
 .admin-container{
+  overflow: hidden;
   width: 100%;
   height: 100vh;
   &::before{
@@ -851,5 +852,21 @@ code {
     background-color: rgba(255, 255, 255, 0.525);
 
   }
+}
+
+.admin-main-container{
+  width: 90%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.26);
+  box-shadow: 0px 0px 2vh rgba(0, 0, 0, 0.194);
+}
+
+.admin-home-container{
+  width: 90%;
+  height: 70%;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0px 0px 2vh rgba(0, 0, 0, 0.194);
+  margin: auto auto;
 }
 /*===========================================================================================================*/
