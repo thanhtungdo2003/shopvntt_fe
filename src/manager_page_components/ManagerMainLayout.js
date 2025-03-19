@@ -1,13 +1,15 @@
 import { ArrowLeft, Box, ChartArea, Home, PanelTopOpen, Settings, UserCog2, Users2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 function ManagerMainLayout() {
     const [selectedId, setSelectedId] = useState(2);
+
     const nav = useNavigate();
     const menuItems = [
-        { id: 2, icon: <Home color="rgb(63, 63, 63)" size={"50%"} onClick={() => { nav("/manager") }} />, name: "Home" },
-        { id: 3, icon: <Box color="rgb(63, 63, 63)" size={"50%"} onClick={() => { nav("/manager/product") }} />, name: "Box" },
+        { page: "/manager", id: 2, icon: <Home color="rgb(63, 63, 63)" size={"50%"} />, name: "Home" },
+        { page: "/manager/product", id: 3, icon: <Box color="rgb(63, 63, 63)" size={"50%"} />, name: "Box" },
         { id: 4, icon: <Users2 color="rgb(63, 63, 63)" size={"50%"} />, name: "Staff" },
         { id: 5, icon: <PanelTopOpen color="rgb(63, 63, 63)" size={"50%"} />, name: "Order" },
         { id: 6, icon: <ChartArea color="rgb(63, 63, 63)" size={"50%"} />, name: "Chart" },
@@ -16,6 +18,8 @@ function ManagerMainLayout() {
     ];
     return (
         <>
+            <ToastContainer />
+
             <div id="container" className="admin-container">
 
                 <div style={{ display: "flex", width: "100%", height: "100%", gap: "3%" }}>
@@ -27,7 +31,7 @@ function ManagerMainLayout() {
                             <div
                                 key={item.id}
                                 className={`left-menu-item ${selectedId === item.id ? "active" : ""}`}
-                                onClick={() => setSelectedId(item.id)}>
+                                onClick={() => { nav(item.page); setSelectedId(item.id) }}>
                                 {item.icon}
                             </div>
                         ))}
