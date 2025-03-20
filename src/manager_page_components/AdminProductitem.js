@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Delete, Link, Link2 } from "lucide-react";
+import { useProductManager } from "./AdminProductContext";
+import axios from "axios";
+import { getUri } from "../js/site";
+import { toast, ToastContainer } from "react-toastify";
 const container = () => { return <div></div> }
 const ContainerStyled = styled.div`
     height: auto;
@@ -40,31 +44,44 @@ const ContainerStyled = styled.div`
         }
     }
 `;
-function AdminProductItem({id, displayName, categoryName, price, img, categorySlug }) {
+function AdminProductItem({ id, displayName, categoryName, price, img, categorySlug, createAt }) {
+    const productManager = useProductManager();
+
     const nav = useNavigate();
-    
-    const handlerClick = (e) => {
-        nav(`/${categorySlug}/${e.currentTarget.id}`);
+
+    const openProductDetailUser = (e) => {
+        nav(`/${categorySlug}/${id}`);
         window.scrollTo(0, 0); // Cuộn lên đầu trang
 
     }
+    const handleClick = (e) => {
+        axios.get(getUri() + "/products/" + id).then((res) => {
+            const product = res.data[0];
+            productManager.setProduct(product);
+           
+        }).catch((err) => {
+            toast.error(err.status + " Lỗi khi lấy chi tiết sản phẩm!", { position: "top-right" });
+        })
+    }
     return (
         <>
-            <ContainerStyled onClick={handlerClick} id={id}>
-                <div style={{ flex:"1" }}>
+            <ToastContainer />
+            <ContainerStyled onClick={handleClick} id={id}>
+                <div style={{ flex: "1" }}>
                     <img style={{ width: "100%", height: "100%", objectFit: "contain" }} src={img} />
                 </div>
-                <div style={{ flex:"8", gap:"5%", display:"flex", alignItems:"center"}}>
+                <div style={{ flex: "8", gap: "5%", display: "flex", alignItems: "center" }}>
                     <div className="product-item-prop" style={{ fontSize: "18px" }}>{displayName}</div>
                     <div className="product-item-prop" style={{ fontSize: "12px", color: "#454545" }}>{categoryName}</div>
+                    <div className="product-item-prop" style={{ fontSize: "12px", color: "#454545" }}>{createAt}</div>
                     <div className="product-item-prop" style={{ fontSize: "14px", color: "red" }}>{"đ " + price.toLocaleString('de-DE')}</div>
                 </div>
-                <div style={{ flex:"1", gap:"10px", display:"flex", alignItems:"center"}}>
+                <div style={{ flex: "1", gap: "10px", display: "flex", alignItems: "center" }}>
                     <div className="product-item-button">
-                        <Link2 color="#666"/>
+                        <Link2 color="#666" onClick={openProductDetailUser} />
                     </div>
                     <div className="product-item-button">
-                        <Delete color="red"/>
+                        <Delete color="red" />
                     </div>
                 </div>
             </ContainerStyled>

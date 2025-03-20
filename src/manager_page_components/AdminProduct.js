@@ -1,17 +1,25 @@
-import { motion } from "framer-motion";
 import AdminElementContainer from "./AdminElementContainer";
-import { AlertCircle, Boxes, Copy, Edit, File, FilePlus, Grid, Grid2X2, Grid2X2Plus, Paperclip, PlusCircle, PlusIcon, PlusSquare, Trash, Trash2, X } from "lucide-react";
+import { AlertCircle, Copy, Edit, FilePlus, Grid2X2, Grid2X2Plus, PlusIcon, Trash, Trash2, X } from "lucide-react";
 import AdminCategoryItem from "./AdminCategoryItem";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { getUri } from "../js/site"
 import { toast } from "react-toastify";
 import { Outlet } from "react-router-dom";
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React from 'react'
+import { useProductManager } from "./AdminProductContext";
 
+const textfieldConfig = {
+    inputLabel: {
+        shrink: true,
+    },
+}
 
 function AdminProduct() {
+
+
+    const [productSelect, setProductSelect] = useState([])
 
     const [images, setImages] = useState([]);
 
@@ -27,7 +35,6 @@ function AdminProduct() {
         setImages((prev) => [...prev, ...newImages]);
     };
     const handleRemoveImage = (index) => {
-        console.log(images);
         setImages((prev) => {
             const updatedImages = [...prev];
             // Hủy URL để tránh rò rỉ bộ nhớ
@@ -48,6 +55,38 @@ function AdminProduct() {
                 toast.error("Lỗi", { position: "top-right" })
             })
     }, []);
+
+    const productManager = useProductManager();
+
+    useEffect(() => {
+        if (productManager) {
+            const product = productManager.product;
+            if (product) {
+                setProductSelect(product);
+                setImages([]);
+                const imgNames = JSON.parse(product.product_imgs);
+                imgNames.forEach(item => {
+                    const imgName = item.split("-")[1];
+                    axios.get(getUri()+"/product/get-imgs/product_imgs/"+imgName, { responseType: 'blob' }).then((res)=>{
+
+                        const file = new File([res.data], imgName, { type: res.data.type });
+
+                        const newImage = {
+                            file: file, // Lưu blob để sau này có thể xóa
+                            url: URL.createObjectURL(res.data), // URL hiển thị ảnh
+                        };
+                
+                        setImages((prev) => [...prev, newImage]); // Cập nhật danh sách ảnh
+                    }).catch((err)=>{
+
+                    })
+                });
+
+               
+            }
+        }
+    }, [productManager])
+
     return (
         <>
             <div className="admin-page-header">
@@ -78,7 +117,7 @@ function AdminProduct() {
                         <div className="category-admin-items">
                             {[...categorys].map((category, index) => (
                                 <AdminCategoryItem
-                                    key={index}
+                                    key={category.category_id}
                                     id={category.category_id}
                                     slug={category.category_slug}
                                     amount={category.total_item}
@@ -115,15 +154,23 @@ function AdminProduct() {
                                     Thông tin chính
                                 </div>
                                 <div className="admin-product-detail-row">
-                                    <TextField label="Tên sản phẩm" variant="outlined" style={{ flex: "1" }} />
+                                    <TextField label="Tên sản phẩm" variant="outlined" style={{ flex: "1" }} onChange={(e) => {
+                                        setProductSelect({ ...productSelect, display_name: e.target.value });
+                                    }} value={productSelect.display_name} slotProps={textfieldConfig} />
 
                                     <FormControl fullWidth style={{ flex: "1" }} >
                                         <InputLabel>Danh mục</InputLabel>
                                         <Select
                                             label="Danh mục"
+                                            value={productSelect.category_id ?? ""}
+                                            onChange={(e) => {
+                                                setProductSelect({ ...productSelect, category_id: e.target.value }); // Cập nhật state
+                                            }}
+                                            slotProps={textfieldConfig}
                                         >
                                             {[...categorys].map((category, index) => (
                                                 <MenuItem
+                                                    key={index}
                                                     value={category.category_id}
                                                 >{category.category_name}</MenuItem>
                                             ))}
@@ -131,7 +178,13 @@ function AdminProduct() {
                                     </FormControl>
                                 </div>
                                 <div className="admin-product-detail-row">
-                                    <TextField fullWidth label="Giá (VND)" variant="outlined" type="number" />
+                                    <TextField fullWidth label="Giá (VND)" variant="outlined" type="number"
+                                        slotProps={textfieldConfig}
+                                        value={productSelect.price ?? ""}
+                                        onChange={(e) => {
+                                            setProductSelect({ ...productSelect, price: e.target.value }); // Cập nhật state
+                                        }}
+                                    />
 
                                 </div>
                             </div>
@@ -151,13 +204,13 @@ function AdminProduct() {
                                             display: "flex", justifyContent: "end",
                                             alignItems: "center", width: "100%",
                                         }}>
-                                            <button onClick={()=>{
+                                            <button onClick={() => {
                                                 setImages([]);
                                             }} style={{
                                                 display: "flex", justifyContent: "center", padding: "1vh",
                                                 alignItems: "center", width: "auto", border: "none", outline: "none",
-                                                backgroundColor: "rgb(222, 89, 89)", color: "white",borderRadius:"1vh"
-                                                ,cursor:"pointer"
+                                                backgroundColor: "rgb(222, 89, 89)", color: "white", borderRadius: "1vh"
+                                                , cursor: "pointer"
                                             }}>
                                                 <Trash2 size={20} color="white" />
                                             </button>
@@ -180,10 +233,18 @@ function AdminProduct() {
                                     Thông tin kèm (*lưu ý: xuống dòng sử dụng \n cuối hàng)
                                 </div>
                                 <div className="admin-product-detail-row">
-                                    <TextField fullWidth label="Thông số" variant="outlined" multiline rows="4" />
+                                    <TextField fullWidth label="Thông số" variant="outlined" multiline rows="4" slotProps={textfieldConfig}
+                                        value={productSelect.pramaters ?? ""}
+                                        onChange={(e) => {
+                                            setProductSelect({ ...productSelect, pramaters: e.target.value }); // Cập nhật state
+                                        }} />
                                 </div>
                                 <div className="admin-product-detail-row">
-                                    <TextField fullWidth label="Mô tả" variant="outlined" multiline rows="6" />
+                                    <TextField fullWidth label="Mô tả" variant="outlined" multiline rows="6" slotProps={textfieldConfig}
+                                        value={productSelect.description ?? ""}
+                                        onChange={(e) => {
+                                            setProductSelect({ ...productSelect, description: e.target.value }); // Cập nhật state
+                                        }} />
                                 </div>
                             </div>
 
@@ -191,6 +252,7 @@ function AdminProduct() {
                     </AdminElementContainer>
                 </div>
             </div>
+
         </>
     )
 }

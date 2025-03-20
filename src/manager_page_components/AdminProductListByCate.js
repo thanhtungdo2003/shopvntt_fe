@@ -34,6 +34,7 @@ function AdminProductListByCate() {
                     categoryName={p.category_name}
                     price={p.price}
                     categorySlug={p.category_slug}
+                    createAt={p.create_at}
                     img={`http://localhost:3000/api/product/get-imgs/product_imgs/` + imageName}
                 />)
             }))

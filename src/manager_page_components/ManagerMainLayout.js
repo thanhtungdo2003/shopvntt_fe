@@ -2,6 +2,7 @@ import { ArrowLeft, Box, ChartArea, Home, PanelTopOpen, Settings, UserCog2, User
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { AdminProductProvider } from "./AdminProductContext";
 
 function ManagerMainLayout() {
     const [selectedId, setSelectedId] = useState(2);
@@ -19,28 +20,29 @@ function ManagerMainLayout() {
     return (
         <>
             <ToastContainer />
+            <AdminProductProvider>
+                <div id="container" className="admin-container">
 
-            <div id="container" className="admin-container">
-
-                <div style={{ display: "flex", width: "100%", height: "100%", gap: "3%" }}>
-                    <div className="left-menu">
-                        <div className="left-menu-item" onClick={() => { nav("/") }}>
-                            <ArrowLeft color="rgb(63, 63, 63)" size={"50%"} />
-                        </div>
-                        {menuItems.map((item) => (
-                            <div
-                                key={item.id}
-                                className={`left-menu-item ${selectedId === item.id ? "active" : ""}`}
-                                onClick={() => { nav(item.page); setSelectedId(item.id) }}>
-                                {item.icon}
+                    <div style={{ display: "flex", width: "100%", height: "100%", gap: "3%" }}>
+                        <div className="left-menu">
+                            <div className="left-menu-item" onClick={() => { nav("/") }}>
+                                <ArrowLeft color="rgb(63, 63, 63)" size={"50%"} />
                             </div>
-                        ))}
-                    </div>
-                    <div className="admin-main-container">
-                        <Outlet />
+                            {menuItems.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className={`left-menu-item ${selectedId === item.id ? "active" : ""}`}
+                                    onClick={() => { nav(item.page); setSelectedId(item.id) }}>
+                                    {item.icon}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="admin-main-container">
+                            <Outlet />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </AdminProductProvider>
         </>
     )
 }

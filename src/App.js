@@ -35,6 +35,7 @@ function App() {
             </Route>
 
             <Route path="/manager" element={<ManagerMainLayout />}>
+            
               <Route index element={<AdminHome/>}/>
               <Route path="/manager/product" element={<AdminProduct/>}>
                 <Route path="/manager/product/:category_slug" element={<AdminProductListByCate/>}>
