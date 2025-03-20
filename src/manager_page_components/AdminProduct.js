@@ -1,10 +1,10 @@
 import AdminElementContainer from "./AdminElementContainer";
-import { AlertCircle, Copy, Edit, FilePlus, Grid2X2, Grid2X2Plus, PlusIcon, Trash, Trash2, X } from "lucide-react";
+import { AlertCircle, Copy, Edit, FilePlus, Grid2X2, Grid2X2Plus, PlusIcon, PlusSquare, Trash, Trash2, X } from "lucide-react";
 import AdminCategoryItem from "./AdminCategoryItem";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { getUri } from "../js/site"
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { Outlet } from "react-router-dom";
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React from 'react'
@@ -17,7 +17,7 @@ const textfieldConfig = {
 }
 
 function AdminProduct() {
-
+    const productManager = useProductManager();
 
     const [productSelect, setProductSelect] = useState([])
 
@@ -54,9 +54,8 @@ function AdminProduct() {
             .catch((err) => {
                 toast.error("Lỗi", { position: "top-right" })
             })
-    }, []);
+    }, [productManager.trigger]);
 
-    const productManager = useProductManager();
 
     useEffect(() => {
         if (productManager) {
@@ -67,7 +66,7 @@ function AdminProduct() {
                 const imgNames = JSON.parse(product.product_imgs);
                 imgNames.forEach(item => {
                     const imgName = item.split("-")[1];
-                    axios.get(getUri()+"/product/get-imgs/product_imgs/"+imgName, { responseType: 'blob' }).then((res)=>{
+                    axios.get(getUri() + "/product/get-imgs/product_imgs/" + imgName, { responseType: 'blob' }).then((res) => {
 
                         const file = new File([res.data], imgName, { type: res.data.type });
 
@@ -75,20 +74,62 @@ function AdminProduct() {
                             file: file, // Lưu blob để sau này có thể xóa
                             url: URL.createObjectURL(res.data), // URL hiển thị ảnh
                         };
-                
+
                         setImages((prev) => [...prev, newImage]); // Cập nhật danh sách ảnh
-                    }).catch((err)=>{
+                    }).catch((err) => {
 
                     })
                 });
 
-               
+
             }
         }
-    }, [productManager])
+    }, [productManager]);
+
+    const updateProductHandle = () => {
+        const reqData = new FormData();
+        Object.keys(productSelect).forEach(key => {
+            reqData.append(key, productSelect[key]);
+        });
+        Object.values(images).map(item => item.file).forEach(file => {
+            reqData.append("images", file);
+        })
+        axios.post(getUri() + "/product/update", reqData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((res) => {
+            toast.success("Cập nhật thông tin sản phẩm thành công!", { position: "top-right" });
+            productManager.onTrigger(Math.floor(Math.random()*1000));
+        }).catch((err) => {
+            toast.error(err.status + " - Cập nhật thông tin sản phẩm thất bại", { position: "top-right" });
+        })
+    };
+    const createProductHandle = () => {
+        const reqData = new FormData();
+    
+        Object.keys(productSelect).forEach(key => {
+            reqData.append(key, productSelect[key]);
+        });
+        Object.values(images).map(item => item.file).forEach(file => {
+            reqData.append("images", file);
+        })
+        axios.post(getUri() + "/products-add", reqData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((res) => {
+            toast.success("Thêm sản phẩm thành công!", { position: "top-right" });
+            productManager.onTrigger(Math.floor(Math.random()*1000));
+
+        }).catch((err) => {
+            toast.error(err.status + " - Thêm sản phẩm thất bại", { position: "top-right" });
+        })
+    }
 
     return (
         <>
+            <ToastContainer />
             <div className="admin-page-header">
                 <div className="admin-page-title">
                     Sản phẩm
@@ -143,8 +184,8 @@ function AdminProduct() {
                                 <p style={{ fontSize: "2.6vh", width: "100%", color: "rgb(120, 120, 120)", borderBottom: "3% solid rgb(100, 100, 100)" }}>Chi tiết sản phẩm</p>
                             </div>
                             <div>
-                                <button><Edit color="rgb(255, 255, 255)" size="auto" /></button>
-                                <button style={{ backgroundColor: "rgb(27, 151, 213)" }}><Copy color="rgb(255, 255, 255)" size="auto" /></button>
+                                <button  onClick={createProductHandle}><PlusSquare color="rgb(255, 255, 255)" size="auto" /></button>
+                                <button  onClick={updateProductHandle}><Edit color="rgb(255, 255, 255)" size="auto" /></button>
                                 <button style={{ backgroundColor: "red" }}><Trash color="rgb(252, 252, 252)" size="auto" /></button>
                             </div>
                         </div>

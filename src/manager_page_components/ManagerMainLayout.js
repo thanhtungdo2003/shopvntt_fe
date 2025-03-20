@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AdminProductProvider } from "./AdminProductContext";
+import '../admin_page.css'
 
 function ManagerMainLayout() {
     const [selectedId, setSelectedId] = useState(2);

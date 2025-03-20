@@ -3,11 +3,13 @@ import { Boxes, PlusSquare } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AdminProductItem from "./AdminProductitem";
+import { useProductManager } from "./AdminProductContext";
 
 function AdminProductListByCate() {
     const { category_slug } = useParams();
     const [products, setProducts] = useState(null);
     const [categoryName, setCategoryName] = useState("");
+    const productManager = useProductManager();
     useEffect(() => {
         axios.post("http://localhost:3000/api/products-get-by-params", {
             row: 10,
@@ -39,7 +41,7 @@ function AdminProductListByCate() {
                 />)
             }))
         })
-    }, [category_slug])
+    }, [category_slug, productManager.trigger])
     return (
         <>
             <div className="category-admin-title">

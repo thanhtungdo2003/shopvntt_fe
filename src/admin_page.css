@@ -1,0 +1,308 @@
+.admin-container {
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+  
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: url("./lib/037019826422.jpg");
+      background-position: center;
+      background-size: cover;
+      z-index: -1;
+      inset: 0;
+    }
+  }
+  
+  .admin-header {
+    width: 100%;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.607);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+  
+  }
+  
+  .left-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.607);
+    backdrop-filter: blur(2vh);
+    box-shadow: 0px 0px 2vh rgba(0, 0, 0, 0.194);
+    height: 70%;
+    width: 4%;
+    margin-top: 4%;
+    border-top-right-radius: 5vh;
+    border-bottom-right-radius: 5vh;
+  
+    .left-menu-item {
+      display: flex;
+      width: 90%;
+      height: 8vh;
+      justify-content: center;
+      align-items: center;
+      border-radius: 15%;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.338);
+      }
+    }
+  
+    .left-menu-item.active {
+      background-color: rgba(255, 255, 255, 0.525);
+  
+    }
+  }
+  
+  .admin-main-container {
+    width: 90%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.26);
+    box-shadow: 0px 0px 2vh rgba(0, 0, 0, 0.194);
+  }
+  
+  .admin-page-header {
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    max-width: 100%;
+    max-height: 10%;
+    background-color: rgba(255, 255, 255, 0.693);
+    box-shadow: 0px 0px 2vh rgba(0, 0, 0, 0.194);
+    backdrop-filter: blur(20vh);
+    border-bottom-right-radius: 3vh;
+    border-bottom-left-radius: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2vh;
+  
+    .admin-page-title {
+      width: 10%;
+      height: 100%;
+      color: #4b4b4bbd;
+      font-size: 3vh;
+      border-left: 1vh solid #4b4b4bbd;
+      text-align: center;
+    }
+  
+    .admin-page-option {
+      display: flex;
+      width: 10%;
+    }
+  }
+  
+  .admin-product-container {
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(255, 255, 255, 0.725);
+    border-radius: 3vh;
+    box-shadow: 0px 0px 2vh rgba(0, 0, 0, 0.194);
+    backdrop-filter: blur(3vh);
+    margin: 1vh auto;
+    padding: 2vh;
+  }
+  
+  .admin-product-main-container {
+    gap: 1vh;
+    display: flex;
+    height: 95vh;
+  }
+  
+  .category-admin-title {
+    display: flex;
+    align-items: center;
+    gap: 5%;
+    justify-content: space-between;
+    border-bottom: 1px solid #83b1da;
+  
+    &>div {
+      display: flex;
+      align-items: center;
+      gap: 5%;
+  
+      &>button {
+        width: 5vh;
+        height: 5vh;
+        border-radius: 1vh;
+        border: none;
+        outline: none;
+        background-color: #2cb037;
+        cursor: pointer;
+  
+        &:hover {
+          background-color: #3bc647;
+  
+        }
+      }
+    }
+  }
+  
+  .category-admin-items {
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+  
+    ;
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: white;
+    }
+  
+    ;
+    height: 70%;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+  
+  .category-admin-item {
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6vh;
+    border-bottom: 0.1vh solid rgba(1, 1, 1, 0.141);
+    cursor: pointer;
+    transition-duration: 0.2s;
+  
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.461);
+      transform: translateY(-0.1vh);
+      box-shadow: 0.1vh 0.1vh 0.1vh rgba(0, 0, 0, 0.111);
+  
+      button {
+        transform: translateX(0vh);
+  
+      }
+    }
+  
+    .category-admin-item-option {
+      flex: 1;
+    }
+  
+    &>div {
+      display: flex;
+      align-items: center;
+  
+      button {
+        transition-duration: 0.2s;
+        transform: translateX(10vh);
+        border: none;
+        outline: none;
+        background-color: transparent;
+        border-radius: 2vh;
+        cursor: pointer;
+  
+        &:hover {
+          background-color: #d632326e;
+        }
+      }
+    }
+  
+    .category-admin-item-name {
+      color: #696969;
+      font-weight: 550;
+      font-size: 2.2vh;
+      flex: 6;
+      display: -webkit-box;
+      /* Sử dụng box layout */
+      -webkit-line-clamp: 2;
+      /* Giới hạn số dòng */
+      -webkit-box-orient: vertical;
+      /* Hướng của box là dọc */
+      overflow: hidden;
+      /* Ẩn phần văn bản bị tràn */
+      text-overflow: ellipsis;
+      /* Hiển thị dấu '...' */
+    }
+  
+    .category-admin-item-amount {
+      font-weight: 400;
+      color: #696969;
+      font-size: 1.7vh;
+      flex: 2;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  
+  .product-item-prop{
+    width: 25%;
+  }
+  
+  .admin-product-detail-form {
+    display: flex;
+    height: 90%;
+    flex-direction: column;
+    gap: 1vh;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+  
+  .admin-product-detail-block {
+    margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+  }
+  
+  .admin-product-detail-row {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .admin-product-detail-row.title {
+    font-size: 13px;
+    font-weight: 550;
+    color: #666;
+  }
+  
+  .main-image-container {
+    border-radius: 10px;
+    border-top-right-radius: 5vh;
+    max-width: 100px;
+    max-height: 100px;
+    padding: 2vh;
+    border: 3px dashed #bababa;
+    color: #989898;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  .image-preview-container {
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vh;
+    position: relative;
+    transition-duration: 0.2s;
+    .image-item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1vh;
+      position: relative;
+      transition-duration: 0.2s;
+  
+    }
+  
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  
+    .remove-button {
+      position: absolute;
+      right: 0;
+      background-color: red;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+  

@@ -7,10 +7,11 @@ const ProductManagerContext = createContext();
 export const AdminProductProvider = ({ children }) => {
 
   const [product, setProduct] = useState(null);
+  const [trigger, onTrigger] = useState(0);
 
 
   return (
-    <ProductManagerContext.Provider value={{product, setProduct}}>
+    <ProductManagerContext.Provider value={{product, setProduct, trigger, onTrigger}}>
       {children}
     </ProductManagerContext.Provider>
   );
