@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/shopvntt_fe/static/css/main.6fcd7391.css",
+    "main.js": "/shopvntt_fe/static/js/main.cdbed010.js",
+    "static/media/slideshow4.png": "/shopvntt_fe/static/media/slideshow4.d75de01a8c13704ead44.png",
+    "static/media/slideshow1.png": "/shopvntt_fe/static/media/slideshow1.219ffe8b8341fe25c27b.png",
+    "static/media/037019826422.jpg": "/shopvntt_fe/static/media/037019826422.652150086ef9ee235f16.jpg",
+    "static/media/slideshow3.png": "/shopvntt_fe/static/media/slideshow3.c42745cfb16bc1166c3d.png",
+    "static/media/slideshow5.png": "/shopvntt_fe/static/media/slideshow5.6ccc7465e19d18b3b735.png",
+    "static/media/slideshow2.png": "/shopvntt_fe/static/media/slideshow2.bd7c1b66c32db90d688b.png",
+    "static/media/empty-box-svgrepo-com.svg": "/shopvntt_fe/static/media/empty-box-svgrepo-com.16338abb7e6d87946fa6c047f472f123.svg",
+    "static/media/zalo-svgrepo-com.svg": "/shopvntt_fe/static/media/zalo-svgrepo-com.7d4c8a08eac67e85f983c8c7b543499c.svg",
+    "static/media/facebook-svgrepo-com.svg": "/shopvntt_fe/static/media/facebook-svgrepo-com.3f4803d12fb1039c9547fc5fb7257123.svg",
+    "static/media/youtube-color-svgrepo-com.svg": "/shopvntt_fe/static/media/youtube-color-svgrepo-com.dd47c6bcb87c07f7473d9f8c7764e682.svg",
+    "static/media/product-svgrepo-com.svg": "/shopvntt_fe/static/media/product-svgrepo-com.569d31cff43b54d2671f1c4958252089.svg",
+    "static/media/down-chevron-svgrepo-com.svg": "/shopvntt_fe/static/media/down-chevron-svgrepo-com.c767edd2c5c313d0b5392fc4d230eda5.svg",
+    "static/media/left-2-svgrepo-com.svg": "/shopvntt_fe/static/media/left-2-svgrepo-com.12e266ebb24b4b9f53ae8969f7c9bb91.svg",
+    "static/media/right-2-svgrepo-com.svg": "/shopvntt_fe/static/media/right-2-svgrepo-com.a8a4841ffa950628ec3760a4e6a48374.svg",
+    "index.html": "/shopvntt_fe/index.html",
+    "static/media/trash-svgrepo-com.svg": "/shopvntt_fe/static/media/trash-svgrepo-com.0f16bd58441292a0a7097442b7b936d6.svg",
+    "static/media/cart-shopping-svgrepo-com.svg": "/shopvntt_fe/static/media/cart-shopping-svgrepo-com.f165a8f82bf6a9c215ea247a143a4b0f.svg",
+    "main.6fcd7391.css.map": "/shopvntt_fe/static/css/main.6fcd7391.css.map",
+    "main.cdbed010.js.map": "/shopvntt_fe/static/js/main.cdbed010.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6fcd7391.css",
+    "static/js/main.cdbed010.js"
+  ]
+}
