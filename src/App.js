@@ -14,6 +14,7 @@ import { AnimatePresence } from "framer-motion";
 import AdminHome from "./manager_page_components/AdminHome";
 import AdminProduct from "./manager_page_components/AdminProduct";
 import AdminProductListByCate from "./manager_page_components/AdminProductListByCate";
+import AdminUser from "./manager_page_components/AdminUser";
 function App() {
   return (
     <>
@@ -41,6 +42,9 @@ function App() {
                 <Route path="/manager/product/:category_slug" element={<AdminProductListByCate/>}>
 
                 </Route>
+              </Route>
+              <Route path="/manager/users" element={<AdminUser/>}>
+                
               </Route>
             </Route>
             <Route path="/account" element={<AccountLayout />}>

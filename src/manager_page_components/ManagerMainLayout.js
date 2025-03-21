@@ -12,7 +12,7 @@ function ManagerMainLayout() {
     const menuItems = [
         { page: "/manager", id: 2, icon: <Home color="rgb(63, 63, 63)" size={"50%"} />, name: "Home" },
         { page: "/manager/product", id: 3, icon: <Box color="rgb(63, 63, 63)" size={"50%"} />, name: "Box" },
-        { id: 4, icon: <Users2 color="rgb(63, 63, 63)" size={"50%"} />, name: "Staff" },
+        { page: "/manager/users", id: 4, icon: <Users2 color="rgb(63, 63, 63)" size={"50%"} />, name: "Staff" },
         { id: 5, icon: <PanelTopOpen color="rgb(63, 63, 63)" size={"50%"} />, name: "Order" },
         { id: 6, icon: <ChartArea color="rgb(63, 63, 63)" size={"50%"} />, name: "Chart" },
         { id: 7, icon: <UserCog2 color="rgb(63, 63, 63)" size={"50%"} />, name: "User Settings" },
