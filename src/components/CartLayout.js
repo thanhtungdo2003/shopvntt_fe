@@ -5,8 +5,10 @@ import ProductCartItem from "./ProductCartItem";
 import { QuantityProvider, useQuantity } from "./QuantityContext";
 import axios from "axios";
 import cartEmptyIcon from "../lib/empty-box-svgrepo-com.svg";
+import { useNavigate } from "react-router-dom";
 function CartLayout() {
     const [totalprice, setTotalPrice] = useState(0);
+    const nav = useNavigate();
     const [finalPrice, setFinalPrice] = useState(0);
     const [cartItems, setCartItems] = useState([]); // State để lưu danh sách sản phẩm
     const [click, onCLick] = useState(0);
@@ -54,7 +56,7 @@ function CartLayout() {
             <div style={{ width: "1164px", display: "flex", gap: "10px" }} onClick={()=>onCLick(click+1)} onKeyDown={()=>onCLick(click+1)}>
                 <div className="cart-products-container">
                     <div style={{ width: "100%", height: "30px", backgroundColor: "rgba(77, 134, 225, 0.67)", display: "flex", alignItems: "center", color: "white", fontWeight: "300" }}>
-                        <p style={{ margin: "0px 10px" }}>0 SẢN PHẨM</p>
+                        <p style={{ margin: "0px 10px" }}>{cartItems.length} SẢN PHẨM</p>
                     </div>
                     <div className="cart-products">
                         {cartItems.length === 0 ? (
@@ -113,7 +115,9 @@ function CartLayout() {
                             <p>Thành tiền: </p><p style={{ color: "red" }}>{totalprice ? (finalPrice).toLocaleString('de-DE') : 0} đ</p>
                         </div>
                     </div>
-                    <button className="summary-sumbit-btn" style={{ maxWidth: "100%", padding: "5px", backgroundColor: "rgb(233, 49, 49)", color: "white", textAlign: "center", cursor: "pointer" }}>
+                    <button onClick={()=>{
+                        nav("/order-confirm")
+                    }} className="summary-sumbit-btn" style={{ maxWidth: "100%", padding: "5px", backgroundColor: "rgb(233, 49, 49)", color: "white", textAlign: "center", cursor: "pointer" }}>
                         ĐẶT HÀNG
                     </button>
                 </div>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Delete, Link, Link2 } from "lucide-react";
-import { useProductManager } from "./AdminProductContext";
+import { useManager } from "./AdminContext";
 import axios from "axios";
 import { getUri } from "../js/site";
 import { toast, ToastContainer } from "react-toastify";
@@ -45,7 +45,7 @@ const ContainerStyled = styled.div`
     }
 `;
 function AdminProductItem({ id, displayName, categoryName, price, img, categorySlug, createAt }) {
-    const productManager = useProductManager();
+    const productManager = useManager();
 
     const nav = useNavigate();
 

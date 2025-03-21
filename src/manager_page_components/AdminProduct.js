@@ -1,14 +1,14 @@
 import AdminElementContainer from "./AdminElementContainer";
-import { AlertCircle, Copy, Edit, FilePlus, Grid2X2, Grid2X2Plus, PlusIcon, PlusSquare, Trash, Trash2, X } from "lucide-react";
+import { AlertCircle, Copy, Edit, FilePlus, Grid2X2, Grid2X2Plus, PlusIcon, PlusSquare, Search, Trash, Trash2, X } from "lucide-react";
 import AdminCategoryItem from "./AdminCategoryItem";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { getUri } from "../js/site"
 import { toast, ToastContainer } from "react-toastify";
 import { Outlet } from "react-router-dom";
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React from 'react'
-import { useProductManager } from "./AdminProductContext";
+import { useManager } from "./AdminContext";
 
 const textfieldConfig = {
     inputLabel: {
@@ -17,7 +17,7 @@ const textfieldConfig = {
 }
 
 function AdminProduct() {
-    const productManager = useProductManager();
+    const productManager = useManager();
 
     const [productSelect, setProductSelect] = useState([])
 
@@ -100,14 +100,14 @@ function AdminProduct() {
             }
         }).then((res) => {
             toast.success("Cập nhật thông tin sản phẩm thành công!", { position: "top-right" });
-            productManager.onTrigger(Math.floor(Math.random()*1000));
+            productManager.onTrigger(Math.floor(Math.random() * 1000));
         }).catch((err) => {
             toast.error(err.status + " - Cập nhật thông tin sản phẩm thất bại", { position: "top-right" });
         })
     };
     const createProductHandle = () => {
         const reqData = new FormData();
-    
+
         Object.keys(productSelect).forEach(key => {
             reqData.append(key, productSelect[key]);
         });
@@ -120,7 +120,7 @@ function AdminProduct() {
             }
         }).then((res) => {
             toast.success("Thêm sản phẩm thành công!", { position: "top-right" });
-            productManager.onTrigger(Math.floor(Math.random()*1000));
+            productManager.onTrigger(Math.floor(Math.random() * 1000));
 
         }).catch((err) => {
             toast.error(err.status + " - Thêm sản phẩm thất bại", { position: "top-right" });
@@ -154,6 +154,7 @@ function AdminProduct() {
                             <div>
                                 <button><Grid2X2Plus color="rgb(255, 255, 255)" size="auto" /></button>
                             </div>
+                           
                         </div>
                         <div className="category-admin-items">
                             {[...categorys].map((category, index) => (
@@ -183,9 +184,10 @@ function AdminProduct() {
                                 <AlertCircle color="rgb(119, 119, 119)" size="5vh" />
                                 <p style={{ fontSize: "2.6vh", width: "100%", color: "rgb(120, 120, 120)", borderBottom: "3% solid rgb(100, 100, 100)" }}>Chi tiết sản phẩm</p>
                             </div>
+                            
                             <div>
-                                <button  onClick={createProductHandle}><PlusSquare color="rgb(255, 255, 255)" size="auto" /></button>
-                                <button  onClick={updateProductHandle}><Edit color="rgb(255, 255, 255)" size="auto" /></button>
+                                <button onClick={createProductHandle}><PlusSquare color="rgb(255, 255, 255)" size="auto" /></button>
+                                <button onClick={updateProductHandle}><Edit color="rgb(255, 255, 255)" size="auto" /></button>
                                 <button style={{ backgroundColor: "red" }}><Trash color="rgb(252, 252, 252)" size="auto" /></button>
                             </div>
                         </div>

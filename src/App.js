@@ -15,6 +15,7 @@ import AdminHome from "./manager_page_components/AdminHome";
 import AdminProduct from "./manager_page_components/AdminProduct";
 import AdminProductListByCate from "./manager_page_components/AdminProductListByCate";
 import AdminUser from "./manager_page_components/AdminUser";
+import OrderPage from "./components/OrderPage";
 function App() {
   return (
     <>
@@ -34,7 +35,9 @@ function App() {
             <Route path="/cart" element={<MainLayout />}>
               <Route index element={<CartLayout />} />
             </Route>
-
+            <Route path="/order-confirm" element={<MainLayout />}>
+              <Route index element={<OrderPage />} />
+            </Route>
             <Route path="/manager" element={<ManagerMainLayout />}>
             
               <Route index element={<AdminHome/>}/>

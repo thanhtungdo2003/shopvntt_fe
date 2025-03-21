@@ -2,7 +2,7 @@ import { ArrowLeft, Box, ChartArea, Home, PanelTopOpen, Settings, UserCog2, User
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { AdminProductProvider } from "./AdminProductContext";
+import { AdminProvider } from "./AdminContext";
 import '../admin_page.css'
 
 function ManagerMainLayout() {
@@ -21,7 +21,7 @@ function ManagerMainLayout() {
     return (
         <>
             <ToastContainer />
-            <AdminProductProvider>
+            <AdminProvider>
                 <div id="container" className="admin-container">
 
                     <div style={{ display: "flex", width: "100%", height: "100%", gap: "3%" }}>
@@ -43,7 +43,7 @@ function ManagerMainLayout() {
                         </div>
                     </div>
                 </div>
-            </AdminProductProvider>
+            </AdminProvider>
         </>
     )
 }

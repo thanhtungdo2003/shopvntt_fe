@@ -1,20 +1,22 @@
 import axios from "axios";
-import { Boxes, PlusSquare } from "lucide-react";
+import { Boxes, PlusSquare, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AdminProductItem from "./AdminProductitem";
-import { useProductManager } from "./AdminProductContext";
+import { useManager } from "./AdminContext";
+import { InputAdornment, TextField } from "@mui/material";
 
 function AdminProductListByCate() {
     const { category_slug } = useParams();
     const [products, setProducts] = useState(null);
     const [categoryName, setCategoryName] = useState("");
-    const productManager = useProductManager();
+    const [keyword, setKeyword] = useState("");
+    const productManager = useManager();
     useEffect(() => {
         axios.post("http://localhost:3000/api/products-get-by-params", {
             row: 10,
             page: 1,
-            keyword: "",
+            keyword: keyword,
             category_slug: category_slug,
             sort: "newest",
             get_type: ""
@@ -23,7 +25,7 @@ function AdminProductListByCate() {
             if (!res.data) return <></>;
             const productsDatas = res.data;
             setCategoryName("");
-            
+
             setProducts(productsDatas.map((p, index) => {
                 const imgNames = JSON.parse(p.product_imgs);
                 const imageName = imgNames.find(i => i.startsWith('1-'))?.split('-')[1] || imgNames[0].split('-')[1];
@@ -41,7 +43,7 @@ function AdminProductListByCate() {
                 />)
             }))
         })
-    }, [category_slug, productManager.trigger])
+    }, [category_slug, productManager.trigger, keyword])
     return (
         <>
             <div className="category-admin-title">
@@ -49,9 +51,26 @@ function AdminProductListByCate() {
                     <Boxes color="rgb(119, 119, 119)" size="4vh" />
                     <p style={{ flex: "10", fontSize: "2.6vh", width: "50vh", color: "rgb(120, 120, 120)", borderBottom: "3% solid rgb(100, 100, 100)" }}>Danh sách sản phẩm ({categoryName})</p>
                 </div>
-                <div>
-                    <button><PlusSquare color="rgb(255, 255, 255)" size="auto" /></button>
+                <div className="search-bar" style={{ width: "70%" }}>
+                    <TextField fullWidth
+                        label="Tìm kiếm"
+                        value={keyword}
+                        onChange={(e) => {
+                            setKeyword(e.target.value)
+                        }}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                        variant="standard"
+                    />
                 </div>
+                
             </div>
             <div className="admin-product-items">
                 {products}
