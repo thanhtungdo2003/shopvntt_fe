@@ -13,7 +13,7 @@ function ManagerMainLayout() {
         { page: "/manager", id: 2, icon: <Home color="rgb(63, 63, 63)" size={"50%"} />, name: "Home" },
         { page: "/manager/product", id: 3, icon: <Box color="rgb(63, 63, 63)" size={"50%"} />, name: "Box" },
         { page: "/manager/users", id: 4, icon: <Users2 color="rgb(63, 63, 63)" size={"50%"} />, name: "Staff" },
-        { id: 5, icon: <PanelTopOpen color="rgb(63, 63, 63)" size={"50%"} />, name: "Order" },
+        { page: "/manager/orders", id: 5, icon: <PanelTopOpen color="rgb(63, 63, 63)" size={"50%"} />, name: "Order" },
         { id: 6, icon: <ChartArea color="rgb(63, 63, 63)" size={"50%"} />, name: "Chart" },
         { id: 7, icon: <UserCog2 color="rgb(63, 63, 63)" size={"50%"} />, name: "User Settings" },
         { id: 8, icon: <Settings color="rgb(63, 63, 63)" size={"50%"} />, name: "Settings" }

@@ -16,6 +16,7 @@ import AdminProduct from "./manager_page_components/AdminProduct";
 import AdminProductListByCate from "./manager_page_components/AdminProductListByCate";
 import AdminUser from "./manager_page_components/AdminUser";
 import OrderPage from "./components/OrderPage";
+import AdminOrder from "./manager_page_components/AdminOrder";
 function App() {
   return (
     <>
@@ -47,6 +48,9 @@ function App() {
                 </Route>
               </Route>
               <Route path="/manager/users" element={<AdminUser/>}>
+                
+              </Route>
+              <Route path="/manager/orders" element={<AdminOrder/>}>
                 
               </Route>
             </Route>

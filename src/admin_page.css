@@ -381,3 +381,21 @@
     }
   }
 }
+
+/*===========================================[ORDER]====================================================*/
+.admin-orders-container{
+  height: 90%;
+  overflow: hidden;
+  overflow-y: auto;
+  gap: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+.order-product-item{
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  background-color: #00000009;
+  color: #393939;
+}

@@ -16,8 +16,7 @@ function OrderPage() {
     const [userData, setUserData] = useState(null);
     const [taxPrice, setTaxPrice] = useState(0);
     const nav = useNavigate();
-    useEffect(() => {
-
+    useEffect(() => {   
         try {
             const localUserData = localStorage.getItem("shop-vntt-user-data");
             if (localUserData) {

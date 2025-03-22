@@ -6,6 +6,7 @@ import { QuantityProvider, useQuantity } from "./QuantityContext";
 import axios from "axios";
 import cartEmptyIcon from "../lib/empty-box-svgrepo-com.svg";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 function CartLayout() {
     const [totalprice, setTotalPrice] = useState(0);
     const nav = useNavigate();
@@ -53,6 +54,7 @@ function CartLayout() {
 
     return (
         <>
+        <ToastContainer/>
             <div style={{ width: "1164px", display: "flex", gap: "10px" }} onClick={()=>onCLick(click+1)} onKeyDown={()=>onCLick(click+1)}>
                 <div className="cart-products-container">
                     <div style={{ width: "100%", height: "30px", backgroundColor: "rgba(77, 134, 225, 0.67)", display: "flex", alignItems: "center", color: "white", fontWeight: "300" }}>
@@ -116,7 +118,12 @@ function CartLayout() {
                         </div>
                     </div>
                     <button onClick={()=>{
-                        nav("/order-confirm")
+                        if (getProductFromCart() === "NONE") {
+                            toast.info("Giỏ hàng trống!", {})
+                            return;
+                        };
+
+                        nav("/order-confirm");
                     }} className="summary-sumbit-btn" style={{ maxWidth: "100%", padding: "5px", backgroundColor: "rgb(233, 49, 49)", color: "white", textAlign: "center", cursor: "pointer" }}>
                         ĐẶT HÀNG
                     </button>

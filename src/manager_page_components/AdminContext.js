@@ -7,13 +7,14 @@ const ManagerContext = createContext();
 export const AdminProvider = ({ children }) => {
 
   const [product, setProduct] = useState(null);
+  const [order, setOrder] = useState([]);
   const [user, setUser] = useState(null);
   const [trigger, onTrigger] = useState(0);
 
 
   return (
     <ManagerContext.Provider value={{product, setProduct, trigger, onTrigger,
-      user, setUser
+      user, setUser, order, setOrder
     }}>
       {children}
     </ManagerContext.Provider>
