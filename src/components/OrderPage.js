@@ -6,10 +6,36 @@ import styled from "styled-components";
 import { getProductFromCart, getUri } from "../js/site";
 import axios from "axios";
 import momoIcon from "../lib/momo-svgrepo-com.svg"
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 function OrderPage() {
-    const [paymethod, setPaymethod] = useState('left');
+    const [paymethod, setPaymethod] = useState('default');
     const [products, setProducts] = useState([]);
+    const [orderDetail, setOrderDetail] = useState({});
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [userData, setUserData] = useState(null);
+    const [taxPrice, setTaxPrice] = useState(0);
+    const nav = useNavigate();
     useEffect(() => {
+
+        try {
+            const localUserData = localStorage.getItem("shop-vntt-user-data");
+            if (localUserData) {
+                const user = JSON.parse(localUserData);
+                setUserData(user);
+
+                setOrderDetail((prevOrderDetail) => ({
+                    ...prevOrderDetail,
+                    user_name: user.username,
+                    email: user.email,
+                    address: user.address,
+                    phone: user.phone,
+                }));
+            }
+        } catch {
+            console.log("Lỗi: dữ liệu người dùng không xác định");
+        }
+
         setProducts([]);
         const productRequests = getProductFromCart().map(productFromCart =>
             axios.get(getUri() + "/products/" + productFromCart.id)
@@ -21,16 +47,46 @@ function OrderPage() {
 
         Promise.all(productRequests)
             .then(productDataList => {
-                setProducts(prevProducts => [...prevProducts, ...productDataList]);
+                setProducts(productDataList);
             })
             .catch(error => {
                 console.error("Error fetching products:", error);
             });
     }, []);
+    useEffect(() => {
+        var totalPriceData = 0;
+        products.forEach(product => {
+            totalPriceData += (product.price * product.quantity);
+        });
+        setTaxPrice(totalPriceData * 0.1);
+        setTotalPrice(totalPriceData);
+    }, [products]);
+
+    const orderSubmit = () => {
+
+        const reqData = {
+            info: {
+                ...orderDetail
+            },
+            detail: {
+                ...getProductFromCart()
+            }
+        }
+        axios.post(getUri() + "/order/create", reqData).then(res => {
+            toast.success("Tạo đơn hàng thành công!", { position: "top-right" });
+            if (paymethod == 'default') {
+                localStorage.removeItem("cart_shopvntt");
+                setTimeout(() => {
+                    nav("/");
+                }, 1000);
+            }
+        }).catch(err => {
+            toast.error(err.status + "Lỗi khi tạo đơn hàng! vui lòng liên hệ admin", { position: "top-right" });
+        })
+    }
     return (<>
-        <div style={{ display: "flex", width: "100%", gap: "10px" }} onClick={() => {
-            console.log(products)
-        }}>
+        <ToastContainer />
+        <div style={{ display: "flex", width: "100%", gap: "10px" }}>
             <div className="order-detail-container">
                 <div className="customer-info-container">
                     <div className="order-detail-container-title">
@@ -38,15 +94,35 @@ function OrderPage() {
                     </div>
                     <div className="order-detail-content-container">
                         <div style={{ display: "flex", alignItems: "center", height: "30px", gap: "5px" }}><label>Họ tên </label><p style={{ color: "red" }} title="thông tin bắt buộc">*</p></div>
-                        <Textfield className="form-input-text" placeholder="nhập họ tên đầy đủ" />
+                        <Textfield className="form-input-text" placeholder="nhập họ tên đầy đủ"
+                            value={orderDetail.fullname}
+                            onChange={(e) => {
+                                setOrderDetail({ ...orderDetail, fullname: e.target.value })
+                            }} />
                         <div style={{ display: "flex", alignItems: "center", height: "30px", gap: "5px" }}><label>Số điện thoại </label><p style={{ color: "red" }} title="thông tin bắt buộc">*</p></div>
-                        <Textfield className="form-input-text" placeholder="nhập số điện thoại" />
+                        <Textfield className="form-input-text" placeholder="nhập số điện thoại"
+                            value={orderDetail.phone}
+                            onChange={(e) => {
+                                setOrderDetail({ ...orderDetail, phone: e.target.value })
+                            }} />
                         <label>Email</label><br />
-                        <Textfield className="form-input-text" placeholder="nhập email (nếu có)" />
+                        <Textfield type="email" className="form-input-text" placeholder="nhập email (nếu có)"
+                            value={orderDetail.email}
+                            onChange={(e) => {
+                                setOrderDetail({ ...orderDetail, email: e.target.value })
+                            }} />
                         <div style={{ display: "flex", alignItems: "center", height: "30px", gap: "5px" }}><label>Địa chỉ </label><p style={{ color: "red" }} title="thông tin bắt buộc">*</p></div>
-                        <Textfield className="form-input-text" placeholder="Số nhà / Đường - Xã - Huyện - Tỉnh" />
+                        <Textfield className="form-input-text" placeholder="Số nhà / Đường - Xã - Huyện - Tỉnh"
+                            value={orderDetail.address}
+                            onChange={(e) => {
+                                setOrderDetail({ ...orderDetail, address: e.target.value })
+                            }} />
                         <br />
-                        <TextField fullWidth multiline rows={5} label="Lưu ý cho shop (nếu có)" className="form-input-text" placeholder="nhập thông tin (nếu có)" />
+                        <TextField fullWidth multiline rows={5} label="Lưu ý cho shop (nếu có)" className="form-input-text" placeholder="nhập thông tin (nếu có)"
+                            value={orderDetail.feedback}
+                            onChange={(e) => {
+                                setOrderDetail({ ...orderDetail, feedback: e.target.value })
+                            }} />
                     </div>
                 </div>
                 <div className="product-list-container">
@@ -85,8 +161,12 @@ function OrderPage() {
                             <div className="step">
                                 <div>
                                     <span>VẬN CHUYỂN ĐẾN</span>
-                                    <p>221B Baker Street, W1U 8ED</p>
-                                    <p>London, United Kingdom</p>
+                                    <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+                                        <p>{orderDetail.phone}</p>-
+                                        <p>{orderDetail.fullname}</p>
+
+                                    </div>
+                                    <p>{orderDetail.address}</p>
                                 </div>
                                 <hr />
                                 <div>
@@ -96,10 +176,10 @@ function OrderPage() {
                                         exclusive
                                         aria-label="text alignment"
                                     >
-                                        <ToggleButton onClick={()=>{setPaymethod("momo")}}  value="momo" aria-label="left aligned">
+                                        <ToggleButton onClick={() => { setPaymethod("momo") }} value="momo" aria-label="left aligned">
                                             <img src={momoIcon} style={{ padding: "5px", width: "24px", height: "24px", backgroundColor: "rgb(162, 58, 103)" }} />
                                         </ToggleButton>
-                                        <ToggleButton onClick={()=>{setPaymethod("default")}}  value="default" aria-label="left aligned">
+                                        <ToggleButton onClick={() => { setPaymethod("default") }} value="default" aria-label="left aligned">
                                             <HandCoins color="white" style={{ padding: "5px", width: "24px", height: "24px", backgroundColor: "rgb(46, 149, 201)" }} />
                                         </ToggleButton>
 
@@ -118,11 +198,11 @@ function OrderPage() {
                                     <span>THÔNG TIN THANH TOÁN</span>
                                     <div className="details">
                                         <span>Tổng tiền:</span>
-                                        <span>$240.00</span>
+                                        <span>đ {totalPrice.toLocaleString()}</span>
                                         <span>Phí vận chuyển:</span>
-                                        <span>$10.00</span>
-                                        <span>Thuế (TAX, VAT):</span>
-                                        <span>$30.40</span>
+                                        <span>đ 32.000</span>
+                                        <span>TAX, VAT (10%):</span>
+                                        <span>đ {taxPrice.toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
@@ -130,8 +210,8 @@ function OrderPage() {
                     </div>
                     <div className="card checkout">
                         <div className="footer">
-                            <label className="price">$280.40</label>
-                            <button className="checkout-btn">XÁC NHẬN</button>
+                            <label className="price">đ {(totalPrice + 32000 + taxPrice).toLocaleString()}</label>
+                            <button className="checkout-btn" onClick={orderSubmit}>XÁC NHẬN</button>
                         </div>
                     </div>
                 </div>
@@ -146,6 +226,7 @@ const StyledWrapper = styled.div`
     display: grid;
     grid-template-columns: auto;
     gap: 0px;
+    transition-duration: 0.2s;
   }
 
   hr {
@@ -156,6 +237,7 @@ const StyledWrapper = styled.div`
   }
 
   .card {
+    transition-duration: 0.2s;
     width: 400px;
     background:rgb(255, 255, 255);
     box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01), 0px 105px 63px rgba(0, 0, 0, 0.05), 0px 47px 47px rgba(0, 0, 0, 0.09), 0px 12px 26px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
@@ -252,7 +334,7 @@ const StyledWrapper = styled.div`
   /* Checkout */
   .payments .details {
     display: grid;
-    grid-template-columns: 10fr 1fr;
+    grid-template-columns: 10fr auto;
     padding: 0px;
     gap: 5px;
   }
@@ -282,7 +364,7 @@ const StyledWrapper = styled.div`
   .price {
     position: relative;
     font-size: 22px;
-    color: #2B2B2F;
+    color:rgb(48, 48, 48);
     font-weight: 900;
   }
 
