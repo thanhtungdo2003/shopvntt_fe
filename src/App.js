@@ -22,7 +22,7 @@ function App() {
     <>
       <AnimatePresence mode="wait">
 
-        <Router>
+        <Router basename="/shopvntt_fe">
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route path="/" element={<ShopMain />}>
